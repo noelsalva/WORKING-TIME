@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WORK TIME</title>
+
+  <!-- IMPORTANT for iPhone responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <!-- iPhone web app support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #f8c8dc, #f4a6c1);
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+
+      /* helps iPhone touch feel smoother */
+      -webkit-text-size-adjust: 100%;
+      touch-action: manipulation;
+    }
+
+    h1 {
+      color: #b03060;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      background: #fff0f5;
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 350px;
+      margin: auto;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      font-size: 16px; /* IMPORTANT: prevents iPhone zoom bug */
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    textarea {
+      height: 90px;
+      resize: none;
+    }
+
+    button {
+      background: #d36c9c;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+
+      -webkit-appearance: none;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #333;
+      min-height: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>WORK TIME</h1>
+
+<form id="workForm" class="container">
+
+  <select name="name" required>
+    <option value="">Select Name</option>
+    <option>Noel</option>
+    <option>Ronelyn</option>
+    <option>Eva</option>
+    <option>Chamo</option>
+    <option>Cristille</option>
+    <option>Cristal</option>
+    <option>Joan</option>
+    <option>Hensly</option>
+    <option>Fritz</option>
+    <option>Randy</option>
+    <option>Romy</option>
+    <option>Mohammed</option>
+    <option>Kimberly</option>
+    <option>Michelle</option>
+    <option>Arvin</option>
+    <option>Elvin</option>
+    <option>Ann</option>
+    <option>John Paul</option>
+    <option>Melanie</option>
+    <option>Cammille</option>
+    <option>Abby</option>
+    <option>Ginalyn</option>
+    <option>Nea</option>
+    <option>Samuel</option>
+    <option>Cammile</option>
+    <option>Rochel</option>
+  </select>
+
+  <select name="team" required>
+    <option value="">Select Team</option>
+    <option>Figurine</option>
+    <option>Decorator</option>
+    <option>Froster</option>
+    <option>Baker</option>
+    <option>Cookies</option>
+    <option>Coverer</option>
+    <option>Supervisor</option>
+    <option>Flower</option>
+  </select>
+
+  <textarea name="remarks" placeholder="Remarks / Activities"></textarea>
+
+  <button type="submit" id="submitBtn">Submit</button>
+
+  <p id="status"></p>
+
+</form>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbwfultWr4xBtPU2W7VTPGteVB2Hkr2CUNv3sXvxlxXtVisIp8v6ptJ_o_-9ttHU3arCjQ/exec";
+
+document.getElementById("workForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const button = document.getElementById("submitBtn");
+  const status = document.getElementById("status");
+
+  button.disabled = true;
+  status.innerText = "Saving...";
+
+  const formData = new FormData(form);
+
+  fetch(scriptURL, {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+    status.innerText = "Saved successfully!";
+    form.reset();
+  })
+  .catch(() => {
+    status.innerText = "Error saving data";
+  })
+  .finally(() => {
+    button.disabled = false;
+    setTimeout(() => status.innerText = "", 3000);
+  });
+});
+</script>
+
+</body>
+</html>
