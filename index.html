@@ -158,10 +158,15 @@ document.getElementById("workForm").addEventListener("submit", function(e) {
 
   const formData = new FormData(form);
 
-  fetch(scriptURL, {
-    method: "POST",
-    body: formData
-  })
+const urlEncoded = new URLSearchParams(formData).toString();
+
+fetch(scriptURL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  body: urlEncoded
+})
   .then(() => {
     status.innerText = "Saved successfully!";
     form.reset();
