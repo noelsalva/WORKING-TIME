@@ -135,7 +135,13 @@
     <option>Flower</option>
   </select>
 
-  <textarea name="remarks" placeholder="Remarks / Activities"></textarea>
+  <!-- REQUIRED REMARKS -->
+  <textarea 
+    name="remarks" 
+    id="remarks"
+    placeholder="Remarks / Activities"
+    required>
+  </textarea>
 
   <button type="submit" id="submitBtn">Submit</button>
 
@@ -152,32 +158,46 @@ document.getElementById("workForm").addEventListener("submit", function(e) {
   const form = e.target;
   const button = document.getElementById("submitBtn");
   const status = document.getElementById("status");
+  const remarks = document.getElementById("remarks").value.trim();
+
+  // VALIDATE REMARKS
+  if (remarks === "") {
+    status.innerText = "Remarks must not be empty!";
+    status.style.color = "red";
+    return;
+  }
 
   button.disabled = true;
   status.innerText = "Saving...";
+  status.style.color = "#333";
 
   const formData = new FormData(form);
 
-const urlEncoded = new URLSearchParams(formData).toString();
+  const urlEncoded = new URLSearchParams(formData).toString();
 
-fetch(scriptURL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  body: urlEncoded
-})
-  .then(() => {
-    status.innerText = "Saved successfully!";
-    form.reset();
+  fetch(scriptURL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: urlEncoded
   })
-  .catch(() => {
-    status.innerText = "Error saving data";
-  })
-  .finally(() => {
-    button.disabled = false;
-    setTimeout(() => status.innerText = "", 3000);
-  });
+    .then(() => {
+      status.innerText = "Saved successfully!";
+      status.style.color = "green";
+      form.reset();
+    })
+    .catch(() => {
+      status.innerText = "Error saving data";
+      status.style.color = "red";
+    })
+    .finally(() => {
+      button.disabled = false;
+
+      setTimeout(() => {
+        status.innerText = "";
+      }, 3000);
+    });
 });
 </script>
 
